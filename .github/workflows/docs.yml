@@ -9,6 +9,13 @@ on:
       - "pnpm-lock.yaml"
       - "turbo.json"
       - "package.json"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch or tag to deploy'
+        required: false
+        default: 'main'
+        type: string
 
 permissions:
   contents: read
@@ -24,6 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
 
       - name: Install, build, and upload (Astro)
         uses: withastro/action@v4
