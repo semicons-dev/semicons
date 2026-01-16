@@ -9,6 +9,7 @@ on:
       - "pnpm-lock.yaml"
       - "turbo.json"
       - "package.json"
+      - ".github/workflows/docs.yml"
   workflow_dispatch:
     inputs:
       ref:

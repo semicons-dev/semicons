@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://semicons-dev.github.io',
+  base: '/semicons/',
   output: 'static',
   server: {
     port: 3000,
