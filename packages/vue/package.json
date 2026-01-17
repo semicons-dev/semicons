@@ -1,0 +1,39 @@
+{
+  "name": "@semicons/vue",
+  "version": "0.0.1",
+  "description": "Vue 3 component library for Semicons - semantic icon tokens with dual sprite/inline modes",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vue": "^3.0.0"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "icons",
+    "semicons",
+    "svg",
+    "sprite",
+    "inline"
+  ],
+  "author": "",
+  "license": "MIT"
+}
