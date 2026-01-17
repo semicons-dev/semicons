@@ -1,26 +1,33 @@
-import type { Rule } from 'eslint';
+import noHardcodedSvgImport from './rules/no-hardcoded-svg-import.js';
+import noImgRawSvg from './rules/no-img-raw-svg.js';
+import validIconToken from './rules/valid-icon-token.js';
 
-export const rules: Record<string, Rule.RuleModule> = {
-  'icon-name-format': {
-    meta: {
-      type: 'problem',
-      docs: {
-        description: 'Enforce icon name format',
-        category: 'Best Practices',
-        recommended: false,
-      },
-      fixable: 'code',
+const rules = {
+  'no-hardcoded-svg-import': noHardcodedSvgImport,
+  'no-img-raw-svg': noImgRawSvg,
+  'valid-icon-token': validIconToken,
+};
+
+const configs = {
+  recommended: {
+    plugins: {
+      '@semicons': { rules },
     },
-    create(context) {
-      return {
-        CallExpression(node) {
-          console.log('Icon name format check');
-        },
-      };
+    rules: {
+      '@semicons/no-hardcoded-svg-import': 'error',
+      '@semicons/no-img-raw-svg': 'warn',
+      '@semicons/valid-icon-token': 'error',
     },
   },
 };
 
-export default {
+const plugin = {
+  meta: {
+    name: '@semicons/eslint-plugin',
+    version: '0.0.1',
+  },
   rules,
+  configs,
 };
+
+export default plugin;
