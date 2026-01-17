@@ -1,18 +1,40 @@
 {
   "name": "@semicons/config",
   "version": "0.0.0",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit"
+  "type": "commonjs",
+  "description": "Shared configuration for Semicons monorepo",
+  "exports": {
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/lib.json": "./tsconfig/lib.json",
+    "./tsconfig/app.json": "./tsconfig/app.json",
+    "./eslint/base": "./eslint/base.cjs",
+    "./eslint/react": "./eslint/react.cjs",
+    "./eslint/astro": "./eslint/astro.cjs",
+    "./prettier": "./prettier/index.cjs"
   },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "prettier": ">=3.0.0",
+    "typescript": ">=5.3.0"
+  },
+  "keywords": [
+    "semicons",
+    "config",
+    "typescript",
+    "eslint",
+    "prettier"
+  ],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.0.0",
     "typescript": "^5.3.0"
   }
 }
