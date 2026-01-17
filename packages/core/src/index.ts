@@ -6,6 +6,15 @@ export {
   validateAssetRef,
   parseAssetRef
 } from './token.js';
+export {
+  getAssetRefNamespace,
+  isLocalAssetRef,
+  extractLocalId,
+  extractAssetRefId,
+  filterLocalTokens,
+  getTokenAssetRefs,
+  getLocalAssetRefs
+} from './asset.js';
 export { toRegistrySchema, toRegistryJSON } from './schema.js';
 
 import type { NormalizedRegistry, NormalizedToken } from './types.js';

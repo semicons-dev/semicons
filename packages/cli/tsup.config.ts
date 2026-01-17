@@ -7,6 +7,7 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   treeshake: true,
+  external: ['@semicons/core', 'commander', 'cosmiconfig', 'glob', 'svgo'],
   esbuildOptions(options) {
     options.outExtension = { '.js': '.mjs' };
   }
