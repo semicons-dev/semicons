@@ -1,35 +1,51 @@
-export interface IconToken {
-  name: string;
-  svg: string;
-  viewBox: string;
-  width: number;
-  height: number;
+export * from './types.js';
+export * from './errors.js';
+export {
+  validateTokenName,
+  parseTokenName,
+  validateAssetRef,
+  parseAssetRef
+} from './token.js';
+export { toRegistrySchema, toRegistryJSON } from './schema.js';
+
+import type { NormalizedRegistry, NormalizedToken } from './types.js';
+
+export type { NormalizedRegistry, NormalizedToken };
+
+export function listTokenNames(registry: NormalizedRegistry): string[] {
+  return registry.tokens.map((t) => t.name);
 }
 
-export interface IconCollection {
-  name: string;
-  tokens: IconToken[];
+export function getToken(
+  registry: NormalizedRegistry,
+  name: string
+): NormalizedToken | undefined {
+  return registry.tokens.find((t) => t.name === name);
 }
 
-export interface IconRegistry {
-  version: string;
-  collections: IconCollection[];
+export function createExampleRegistry(): NormalizedRegistry {
+  const { registry } = normalizeConfig({
+    version: '0.0.0',
+    tokens: {
+      'navigation:menu': {
+        themes: { light: 'local:menu-light', dark: 'local:menu-dark' },
+        a11y: { label: 'Menu' },
+        meta: { category: 'navigation', description: 'Open menu' }
+      },
+      'alert:error': {
+        themes: { light: 'local:error-light', dark: 'local:error-dark' },
+        a11y: { role: 'img', label: 'Error' },
+        meta: { tags: ['danger', 'status'], deprecated: '2.0.0' }
+      },
+      'editor:bold': {
+        themes: { light: 'lucide:bold', dark: 'lucide:bold' },
+        a11y: { label: 'Bold' },
+        meta: { category: 'editor' }
+      }
+    }
+  });
+  return registry;
 }
 
-export interface SchemaOutput {
-  tokens: IconToken[];
-  collections: string[];
-  version: string;
-}
-
-export function generateSchema(tokens: IconToken[]): SchemaOutput {
-  return {
-    tokens,
-    collections: [...new Set(tokens.map((t) => t.name.split('/')[0]))],
-    version: '1.0.0',
-  };
-}
-
-export function outputJSON(data: SchemaOutput): string {
-  return JSON.stringify(data, null, 2);
-}
+import { normalizeConfig } from './normalize.js';
+export { normalizeConfig };
