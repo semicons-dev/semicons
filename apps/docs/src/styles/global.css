@@ -136,3 +136,115 @@ code {
   font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
   font-size: 0.9rem;
 }
+
+/* Dropdown Menu */
+nav .dropdown {
+  position: relative;
+}
+
+nav .dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav .dropdown-toggle::after {
+  content: '▼';
+  font-size: 0.7em;
+  color: var(--color-muted);
+}
+
+nav .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  padding: 0.5rem 0;
+  display: none;
+  z-index: 100;
+}
+
+nav .dropdown:hover .dropdown-menu,
+nav .dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+nav .dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav .dropdown-menu a:hover {
+  background: var(--color-border);
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.card p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+table th,
+table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+table th {
+  background: var(--color-border);
+  font-weight: 600;
+}
+
+table code {
+  background: var(--color-border);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}

@@ -1,0 +1,298 @@
+---
+import '../../../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>React Quickstart - Semicons</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/semicons/" class="logo">Semicons</a>
+        <a href="/semicons/docs/cli-quickstart">CLI</a>
+        <div class="dropdown">
+          <a href="/semicons/docs/framework/react-quickstart" class="dropdown-toggle">Framework</a>
+          <div class="dropdown-menu">
+            <a href="/semicons/docs/framework/react-quickstart">React</a>
+            <a href="/semicons/docs/framework/vue-quickstart">Vue</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <h1>React Quickstart</h1>
+        <p>
+          @semicons/react is the React runtime for Semicons, providing type-safe
+          icon components with dual sprite/inline rendering modes.
+        </p>
+
+        <section>
+          <h2>Installation</h2>
+          <pre><code>pnpm add @semicons/react</code></pre>
+          <p>Or using npm:</p>
+          <pre><code>npm install @semicons/react</code></pre>
+        </section>
+
+        <section>
+          <h2>Basic Usage</h2>
+          <pre><code>import &#123; Icon, SemiconsProvider &#125; from '@semicons/react'
+
+export function App() &#123;
+  return (
+    &lt;SemiconsProvider spriteUrl="/semicons.svg"&gt;
+      &lt;Icon name="navigation:menu" /&gt;
+    &lt;/SemiconsProvider&gt;
+  )
+&#125;</code></pre>
+        </section>
+
+        <section>
+          <h2>Render Modes</h2>
+          
+          <h3>Sprite Mode (Default)</h3>
+          <p>Uses <code>&lt;use href="#icon-name" /&gt;</code> to reference symbols from an external SVG sprite file.</p>
+          <pre><code>&lt;Icon name="navigation:menu" mode="sprite" /&gt;</code></pre>
+          <p><strong>Requirements:</strong> Deploy <code>semicons.svg</code> to your public directory.</p>
+          
+          <h3>Inline Mode</h3>
+          <p>Renders SVG directly inline. Useful for SSR, offline apps, or when sprite isn't available.</p>
+          <pre><code>&lt;Icon name="navigation:menu" mode="inline" /&gt;</code></pre>
+          
+          <h3>Auto Mode (Recommended)</h3>
+          <p>Automatically chooses sprite if available, falls back to inline.</p>
+          <pre><code>&lt;Icon name="navigation:menu" mode="auto" /&gt; &lt;!-- Default --&gt;</code></pre>
+        </section>
+
+        <section>
+          <h2>Sprite Configuration</h2>
+          <p>Deploy the generated sprite file to your public directory:</p>
+          <pre><code># After running CLI generate, copy to public
+cp src/icons.generated/semicons.svg public/
+
+# Or configure your build tool to include it</code></pre>
+        </section>
+
+        <section>
+          <h2>Inline Mode Configuration</h2>
+          
+          <h3>1. Generate Icons with CLI</h3>
+          <pre><code>npx @semicons/cli generate --inline</code></pre>
+          
+          <h3>2. Configure Alias</h3>
+          <p><strong>Vite:</strong></p>
+          <pre><code>// vite.config.ts
+export default defineConfig(&#123;
+  resolve: &#123;
+    alias: &#123;
+      '@semicons/generated': './src/icons.generated/inline.ts',
+    &#125;,
+  &#125;,
+&#125;)</code></pre>
+          
+          <p><strong>Webpack:</strong></p>
+          <pre><code>// webpack.config.js
+module.exports = &#123;
+  resolve: &#123;
+    alias: &#123;
+      '@semicons/generated': path.resolve(__dirname, 'src/icons.generated/inline.ts'),
+    &#125;,
+  &#125;,
+&#125;</code></pre>
+          
+          <h3>3. Initialize in App</h3>
+          <pre><code>// main.tsx
+import &#123; setInlineIcons, setIconMeta &#125; from '@semicons/react'
+import &#123; INLINE_ICONS, ICON_META &#125; from '@semicons/generated'
+
+// Initialize inline icons data
+setInlineIcons(INLINE_ICONS)
+setIconMeta(ICON_META)</code></pre>
+        </section>
+
+        <section>
+          <h2>Icon Props</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name</code></td>
+                <td><code>string</code></td>
+                <td>Required</td>
+                <td>Icon token name (e.g., "navigation:menu")</td>
+              </tr>
+              <tr>
+                <td><code>mode</code></td>
+                <td><code>'auto' | 'sprite' | 'inline'</code></td>
+                <td><code>'auto'</code></td>
+                <td>Render mode</td>
+              </tr>
+              <tr>
+                <td><code>spriteUrl</code></td>
+                <td><code>string</code></td>
+                <td><code>'/semicons.svg'</code></td>
+                <td>Sprite file URL</td>
+              </tr>
+              <tr>
+                <td><code>size</code></td>
+                <td><code>number | 'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
+                <td><code>'md'</code></td>
+                <td>Icon size (12/16/20/24/32px)</td>
+              </tr>
+              <tr>
+                <td><code>decorative</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>Whether icon is decorative</td>
+              </tr>
+              <tr>
+                <td><code>ariaLabel</code></td>
+                <td><code>string</code></td>
+                <td>-</td>
+                <td>Accessible label (required if decorative=false)</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td><code>string</code></td>
+                <td>-</td>
+                <td><code>&lt;title&gt;</code> element content</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Size Values</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Pixel Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>xs</code></td><td>12px</td></tr>
+              <tr><td><code>sm</code></td><td>16px</td></tr>
+              <tr><td><code>md</code></td><td>20px</td></tr>
+              <tr><td><code>lg</code></td><td>24px</td></tr>
+              <tr><td><code>xl</code></td><td>32px</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Accessibility Best Practices</h2>
+          
+          <h3>Decorative Icons</h3>
+          <p>Icons that add visual context (not conveying information) should be decorative:</p>
+          <pre><code>&lt;button aria-label="Open menu"&gt;
+  &lt;Icon name="navigation:menu" decorative /&gt;
+&lt;/button&gt;</code></pre>
+          <ul>
+            <li>Renders <code>aria-hidden="true"</code></li>
+            <li>No screen reader announcement</li>
+          </ul>
+          
+          <h3>Informative Icons</h3>
+          <p>Icons that convey meaning must have an accessible label:</p>
+          <pre><code>&lt;Icon
+  name="status:error"
+  decorative=&#123;false&#125;
+  ariaLabel="Error: Form validation failed"
+/&gt;</code></pre>
+          <ul>
+            <li>Renders <code>role="img"</code> with <code>aria-label</code></li>
+            <li>Screen reader announces the label</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>SemiconsProvider</h2>
+          <p>Provides default values for all Icon components:</p>
+          <pre><code>&lt;SemiconsProvider
+  spriteUrl="/semicons.svg"
+  defaultMode="auto"
+  defaultSize="md"
+  defaultDecorative=&#123;true&#125;
+&gt;
+  &lt;Icon name="navigation:menu" /&gt;
+&lt;/SemiconsProvider&gt;</code></pre>
+          
+          <h3>Provider Props</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>spriteUrl</code></td><td><code>string</code></td><td><code>'/semicons.svg'</code></td></tr>
+              <tr><td><code>defaultMode</code></td><td><code>'auto' | 'sprite' | 'inline'</code></td><td><code>'auto'</code></td></tr>
+              <tr><td><code>defaultSize</code></td><td><code>IconSize</code></td><td><code>'md'</code></td></tr>
+              <tr><td><code>defaultDecorative</code></td><td><code>boolean</code></td><td><code>true</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Helper Functions</h2>
+          <pre><code>import &#123; getIconMeta, isDeprecated &#125; from '@semicons/react'
+
+// Get icon metadata
+const meta = getIconMeta('navigation:menu')
+if (meta?.deprecated) &#123;
+  console.warn(`Icon is deprecated: $&#123;meta.deprecated&#125;`)
+&#125;
+
+// Check if icon is deprecated
+if (isDeprecated('old:icon')) &#123;
+  // Handle deprecated icon
+&#125;</code></pre>
+        </section>
+
+        <section>
+          <h2>Complete Example</h2>
+          <pre><code>import &#123; Icon, SemiconsProvider &#125; from '@semicons/react'
+
+export function App() &#123;
+  return (
+    &lt;SemiconsProvider
+      spriteUrl="/semicons.svg"
+      defaultMode="auto"
+      defaultSize="md"
+    &gt;
+      &lt;div class="toolbar"&gt;
+        &lt;button aria-label="Open menu"&gt;
+          &lt;Icon name="navigation:menu" /&gt;
+        &lt;/button&gt;
+        
+        &lt;button aria-label="Edit"&gt;
+          &lt;Icon name="action:edit" /&gt;
+        &lt;/button&gt;
+        
+        &lt;Icon
+          name="status:error"
+          decorative=&#123;false&#125;
+          ariaLabel="System error occurred"
+        /&gt;
+      &lt;/div&gt;
+    &lt;/SemiconsProvider&gt;
+  )
+&#125;</code></pre>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

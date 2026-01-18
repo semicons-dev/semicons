@@ -1,0 +1,103 @@
+---
+import '../../../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Framework Guides - Semicons</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/semicons/" class="logo">Semicons</a>
+        <a href="/semicons/docs/cli-quickstart">CLI</a>
+        <div class="dropdown">
+          <a href="/semicons/docs/framework/react-quickstart" class="dropdown-toggle">Framework</a>
+          <div class="dropdown-menu">
+            <a href="/semicons/docs/framework/react-quickstart">React</a>
+            <a href="/semicons/docs/framework/vue-quickstart">Vue</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <h1>Framework Guides</h1>
+        <p>
+          Semicons provides framework-specific runtime libraries for React and Vue.
+          Choose your framework below to get started with semantic icon tokens.
+        </p>
+
+        <div class="card-grid">
+          <a href="/semicons/docs/framework/react-quickstart" class="card">
+            <h2>React →</h2>
+            <p>@semicons/react</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+              TypeScript support, React hooks, forwardRef, and a11y by default.
+            </p>
+          </a>
+          <a href="/semicons/docs/framework/vue-quickstart" class="card">
+            <h2>Vue →</h2>
+            <p>@semicons/vue</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+              Vue 3 Composition API, provide/inject context, and Vue-specific optimizations.
+            </p>
+          </a>
+        </div>
+
+        <section>
+          <h2>Shared Features</h2>
+          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+            <li><strong>Dual Mode Rendering:</strong> Sprite (default) or inline SVG</li>
+            <li><strong>Type-Safe:</strong> Full TypeScript support with generated types</li>
+            <li><strong>A11y by Default:</strong> Proper ARIA attributes for screen readers</li>
+            <li><strong>Tree-Shakeable:</strong> Only bundle what you use</li>
+            <li><strong>Semantic Tokens:</strong> Use category:name pattern (e.g., "navigation:menu")</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Quick Comparison</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>React</th>
+                <th>Vue</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Package</td>
+                <td><code>@semicons/react</code></td>
+                <td><code>@semicons/vue</code></td>
+              </tr>
+              <tr>
+                <td>API Style</td>
+                <td>JSX + Hooks</td>
+                <td>Template + Composition API</td>
+              </tr>
+              <tr>
+                <td>Context</td>
+                <td>React Context</td>
+                <td>Vue provide/inject</td>
+              </tr>
+              <tr>
+                <td>Component</td>
+                <td>forwardRef</td>
+                <td>defineComponent</td>
+              </tr>
+              <tr>
+                <td>Installation</td>
+                <td><code>pnpm add @semicons/react</code></td>
+                <td><code>pnpm add @semicons/vue</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
