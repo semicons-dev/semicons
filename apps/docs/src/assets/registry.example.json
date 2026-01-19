@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "themes": ["light", "dark"],
+  "defaultTheme": "light",
+  "tokens": [
+    {
+      "name": "navigation:menu",
+      "themes": {
+        "light": "local:menu-light",
+        "dark": "local:menu-dark"
+      },
+      "a11y": {
+        "label": "Menu"
+      },
+      "meta": {
+        "category": "navigation",
+        "description": "Open menu navigation"
+      }
+    },
+    {
+      "name": "navigation:home",
+      "themes": {
+        "light": "lucide:home",
+        "dark": "lucide:home"
+      },
+      "a11y": {
+        "label": "Home"
+      },
+      "meta": {
+        "category": "navigation",
+        "description": "Go to home page"
+      }
+    },
+    {
+      "name": "editor:bold",
+      "themes": {
+        "light": "lucide:bold",
+        "dark": "lucide:bold"
+      },
+      "a11y": {
+        "label": "Bold text"
+      },
+      "meta": {
+        "category": "editor",
+        "description": "Format text as bold"
+      }
+    },
+    {
+      "name": "alert:warning",
+      "themes": {
+        "light": "local:warning",
+        "dark": "local:warning"
+      },
+      "a11y": {
+        "label": "Warning"
+      },
+      "meta": {
+        "category": "alert",
+        "tags": ["attention", "status"]
+      }
+    },
+    {
+      "name": "alert:error",
+      "themes": {
+        "light": "local:error",
+        "dark": "local:error"
+      },
+      "a11y": {
+        "label": "Error"
+      },
+      "meta": {
+        "category": "alert",
+        "description": "Critical error indicator",
+        "deprecated": "2.0.0"
+      }
+    }
+  ]
+}

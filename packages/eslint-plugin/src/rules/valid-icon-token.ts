@@ -1,14 +1,35 @@
 import { Rule } from 'eslint';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TOKEN_NAME_PATTERN, type IconRegistry } from '../types.js';
 
 export const RULE_NAME = 'valid-icon-token';
+
+const TOKEN_NAME_PATTERN = /^[a-z][a-z0-9-]*:[a-zA-Z0-9][a-zA-Z0-9._/-]*$/;
 
 interface RuleOptions {
   iconComponentName?: string;
   iconNameProp?: string;
   registryPath?: string;
+}
+
+interface RegistryToken {
+  name: string;
+  deprecated?: boolean | string;
+  meta?: {
+    description?: string;
+    tags?: string[];
+    category?: string;
+  };
+  a11y?: {
+    label?: string;
+  };
+}
+
+interface Registry {
+  version: string;
+  themes: string[];
+  defaultTheme: string;
+  tokens: RegistryToken[];
 }
 
 const rule: Rule.RuleModule = {
@@ -39,13 +60,13 @@ const rule: Rule.RuleModule = {
     const options: RuleOptions = context.options[0] || {};
     const iconComponentName = options.iconComponentName || 'Icon';
     const iconNameProp = options.iconNameProp || 'name';
-    let registry: IconRegistry | null = null;
+    let registry: Registry | null = null;
 
     if (options.registryPath) {
       try {
         const registryFilePath = path.resolve(context.getFilename(), '..', options.registryPath);
         const content = fs.readFileSync(registryFilePath, 'utf-8');
-        registry = JSON.parse(content) as IconRegistry;
+        registry = JSON.parse(content) as Registry;
       } catch {
       }
     }
@@ -69,7 +90,7 @@ const rule: Rule.RuleModule = {
             data: { name: tokenName },
           });
         } else if (token.deprecated) {
-          const replacement = token.replacement ? `; use "${token.replacement}" instead` : '';
+          const replacement = typeof token.deprecated === 'string' ? ` (removed in ${token.deprecated})` : '';
           context.report({
             node,
             messageId: 'deprecated',

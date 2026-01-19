@@ -10,6 +10,6 @@ export type {
   IconMetaRecord,
 } from './types';
 
-export { Icon } from './Icon';
+export { Icon, setInlineIcons, setIconMeta, getIconMeta, isDeprecated } from './Icon';
 export { SemiconsProvider } from './SemiconsProvider';
 export { useSemicons } from './context';

@@ -1,7 +1,7 @@
 import type { AssetRef } from './types.js';
 import { SemiconsError } from './errors.js';
 
-const TOKEN_NAME_PATTERN = /^[a-z][a-z0-9-]*:[a-zA-Z0-9][a-zA-Z0-9._/-]*$/;
+export const TOKEN_NAME_PATTERN = /^[a-z][a-z0-9-]*:[a-zA-Z0-9][a-zA-Z0-9._/-]*$/;
 
 export function validateTokenName(
   name: string

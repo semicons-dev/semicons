@@ -125,6 +125,10 @@ importers:
         version: 1.6.1(@types/node@20.19.29)
 
   packages/eslint-plugin:
+    dependencies:
+      '@semicons/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@typescript-eslint/parser':
         specifier: ^7.0.0

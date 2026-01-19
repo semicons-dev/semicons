@@ -1,10 +1,30 @@
 import { defineComponent, h, computed, type PropType } from 'vue';
-import type { IconProps, IconMode, IconSize } from './types';
+import type { IconProps, IconMode, IconSize, InlineIconData, IconMeta } from './types';
 import { useSemicons } from './context';
 import { renderSpriteIcon } from './render/renderSprite';
 import { renderInlineIcon } from './render/renderInline';
 import { computeA11yAttrs, validateA11y } from './a11y';
 import { resolveSize } from './utils';
+
+let INLINE_ICONS: Record<string, InlineIconData> = {};
+let ICON_META: Record<string, IconMeta> = {};
+
+export function setInlineIcons(icons: Record<string, InlineIconData>): void {
+  INLINE_ICONS = icons;
+}
+
+export function setIconMeta(meta: Record<string, IconMeta>): void {
+  ICON_META = meta;
+}
+
+export function getIconMeta(name: string): IconMeta | undefined {
+  return ICON_META[name];
+}
+
+export function isDeprecated(name: string): boolean {
+  const meta = ICON_META[name];
+  return meta?.deprecated === true || typeof meta?.deprecated === 'string';
+}
 
 export const Icon = defineComponent({
   name: 'SemIcon',
@@ -48,7 +68,7 @@ export const Icon = defineComponent({
 
     const svgAttrs = computed(() => {
       const decorative = props.decorative ?? ctx.defaultDecorative ?? true;
-      
+
       const a11yAttrs = computeA11yAttrs({
         decorative,
         ariaLabel: props.ariaLabel,
@@ -88,7 +108,14 @@ export const Icon = defineComponent({
       }
 
       if (mode === 'inline') {
-        return renderInlineIcon(props.name, svgAttrs.value);
+        const inlineData = INLINE_ICONS[props.name];
+        if (!inlineData) {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`[@semicons/vue] Icon "${props.name}" not found in inline data`);
+          }
+          return null;
+        }
+        return renderInlineIcon(props.name, inlineData, svgAttrs.value);
       }
 
       // auto mode: prefer sprite if URL available, fallback to inline
@@ -99,7 +126,15 @@ export const Icon = defineComponent({
         }
       }
 
-      return renderInlineIcon(props.name, svgAttrs.value);
+      const inlineData = INLINE_ICONS[props.name];
+      if (inlineData) {
+        return renderInlineIcon(props.name, inlineData, svgAttrs.value);
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`[@semicons/vue] Icon "${props.name}" not found in sprite or inline data`);
+      }
+      return null;
     };
   },
 });

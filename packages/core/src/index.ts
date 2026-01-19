@@ -1,6 +1,7 @@
 export * from './types.js';
 export * from './errors.js';
 export {
+  TOKEN_NAME_PATTERN,
   validateTokenName,
   parseTokenName,
   validateAssetRef,

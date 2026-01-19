@@ -62,9 +62,6 @@ export const Icon = forwardRef<HTMLSpanElement, IconProps>(
       if (mode === 'sprite') return 'sprite';
 
       if (spriteUrl) {
-        if (!INLINE_ICONS[name]) {
-          return 'sprite';
-        }
         return 'sprite';
       }
 

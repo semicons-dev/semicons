@@ -1,5 +1,5 @@
 import { cosmiconfig } from 'cosmiconfig';
-import { normalizeConfig, type NormalizedRegistry, type RegistryConfigInput, type NormalizeWarning } from '@semicons/core';
+import { normalizeConfig, type NormalizedRegistry, type RegistryConfigInput, type NormalizeWarning, type NormalizeOptions } from '@semicons/core';
 
 export interface LoadConfigResult {
   config: RegistryConfigInput;
@@ -8,7 +8,7 @@ export interface LoadConfigResult {
   filepath: string;
 }
 
-export async function loadConfig(configPath?: string): Promise<LoadConfigResult> {
+export async function loadConfig(configPath?: string, options?: NormalizeOptions): Promise<LoadConfigResult> {
   const explorer = cosmiconfig('semicons', {
     searchPlaces: [
       'semicons.config.mjs',
@@ -36,7 +36,7 @@ export async function loadConfig(configPath?: string): Promise<LoadConfigResult>
     throw new Error('No semicons config found. Create semicons.config.mjs/js/json');
   }
 
-  const { registry, warnings } = normalizeConfig(result.config as RegistryConfigInput);
+  const { registry, warnings } = normalizeConfig(result.config as RegistryConfigInput, options);
 
   return {
     config: result.config as RegistryConfigInput,
