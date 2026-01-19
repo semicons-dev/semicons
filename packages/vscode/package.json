@@ -1,0 +1,75 @@
+{
+  "name": "semicons",
+  "displayName": "Semicons",
+  "description": "Semantic icon token system for VS Code - completion, hover, diagnostics, and preview",
+  "version": "0.0.1",
+  "publisher": "semicons",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact",
+    "onLanguage:vue",
+    "onLanguage:astro",
+    "onCommand:semicons.refreshRegistry",
+    "onCommand:semicons.searchToken",
+    "onCommand:semicons.previewIcon",
+    "workspaceContains:**/src/icons.generated/registry.json"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "semicons.refreshRegistry",
+        "title": "Semicons: Refresh Registry",
+        "category": "Semicons"
+      },
+      {
+        "command": "semicons.searchToken",
+        "title": "Semicons: Search Token",
+        "category": "Semicons"
+      },
+      {
+        "command": "semicons.previewIcon",
+        "title": "Semicons: Preview Icon",
+        "category": "Semicons"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Semicons",
+        "properties": {
+          "semicons.registryPath": {
+            "type": "string",
+            "default": "src/icons.generated/registry.json",
+            "description": "Path to registry.json relative to workspace folder"
+          },
+          "semicons.localIconDir": {
+            "type": "string",
+            "default": "icons/local",
+            "description": "Directory for local icons (relative to workspace root)"
+          },
+          "semicons.iconComponentName": {
+            "type": "string",
+            "default": "Icon",
+            "description": "Icon component name to match in code"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.0.0"
+  }
+}
