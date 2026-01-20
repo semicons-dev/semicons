@@ -61,40 +61,40 @@
 - **文件**: `packages/eslint-plugin/src/rules/valid-icon-token.ts`
 - **改动**: 支持从 `process.cwd()` 向上搜索 `icons.generated/registry.json`
 - **效果**: 用户无需配置 `registryPath`，开箱即用
-- **状态**: 待开始
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ### P1-2: packages/eslint-plugin 添加配置项到 recommended config
 
 - **文件**: `packages/eslint-plugin/src/index.ts:11-22`
 - **改动**: 为 recommended 配置添加 `{ registryPath: 'src/icons.generated/registry.json' }`
 - **效果**: 用户只需启用 recommended config
-- **状态**: 待开始
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ### P1-3: packages/vscode 添加 Webview Preview 功能
 
 - **文件**: `packages/vscode/src/views/previewWebview.ts` (已存在)
 - **检查**: 确认 `previewIcon` 命令能正常显示 SVG
 - **效果**: 用户 hover 时可点击预览 icon
-- **状态**: 待开始
+- **状态**: ✅ 已完成 (2024-01-20) - 功能已完整实现
 
 ### P1-4: apps/docs 补充 Vue 快速开始文档
 
 - **文件**: `apps/docs/src/pages/docs/framework/vue-quickstart.astro`
 - **参考**: React 文档结构
-- **状态**: 待开始
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ### P1-5: apps/docs 补充 CLI 高级用法文档
 
 - **文件**: `apps/docs/src/pages/docs/cli-advanced.astro` (新建)
-- **内容**: scan/doctor 命令、strict 模式、theme 配置
-- **状态**: 待开始
+- **内容**: scan/doctor 命令、strict 模式、theme 配置、CI/CD 集成
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ### P1-6: 根目录添加 CI 验证构建
 
 - **文件**: `.github/workflows/ci.yml` (新建)
 - **内容**: `pnpm install → pnpm build → pnpm typecheck → pnpm test`
 - **效果**: 每次 PR 自动验证构建
-- **状态**: 待开始
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ---
 

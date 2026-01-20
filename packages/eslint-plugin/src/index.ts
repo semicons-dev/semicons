@@ -16,7 +16,7 @@ const configs = {
     rules: {
       '@semicons/no-hardcoded-svg-import': 'error',
       '@semicons/no-img-raw-svg': 'warn',
-      '@semicons/valid-icon-token': 'error',
+      '@semicons/valid-icon-token': ['error', { registryPath: 'src/icons.generated/registry.json' }],
     },
   },
 };

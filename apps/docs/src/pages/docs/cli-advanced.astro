@@ -1,0 +1,386 @@
+---
+import '../../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CLI Advanced - Semicons</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/semicons/" class="logo">Semicons</a>
+        <a href="/semicons/docs/cli-quickstart">CLI</a>
+        <div class="dropdown">
+          <a href="/semicons/docs/framework/react-quickstart" class="dropdown-toggle">Framework</a>
+          <div class="dropdown-menu">
+            <a href="/semicons/docs/framework/react-quickstart">React</a>
+            <a href="/semicons/docs/framework/vue-quickstart">Vue</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <h1>CLI Advanced Usage</h1>
+        <p>
+          Learn about advanced CLI features including scanning, diagnostics, and strict mode.
+        </p>
+
+        <section>
+          <h2>Scan Command</h2>
+          <p>
+            The <code>scan</code> command analyzes your codebase for icon usage patterns and violations.
+          </p>
+
+          <h3>Basic Usage</h3>
+          <pre><code>npx @semicons/cli scan ./src</code></pre>
+
+          <h3>Options</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>-d, --dir &lt;path&gt;</code></td>
+                <td>Directory to scan (default: current directory)</td>
+              </tr>
+              <tr>
+                <td><code>-c, --config &lt;path&gt;</code></td>
+                <td>Path to config file</td>
+              </tr>
+              <tr>
+                <td><code>-f, --format &lt;text|json|html&gt;</code></td>
+                <td>Output format (default: text)</td>
+              </tr>
+              <tr>
+                <td><code>--fail-on &lt;error|warn|never&gt;</code></td>
+                <td>Exit condition (default: error)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Output Formats</h3>
+          <p><strong>Text (default):</strong></p>
+          <pre><code>npx @semicons/cli scan ./src -f text
+
+┌─────────┬────────────┬───────────────────────────────┬──────────┐
+│ File    │ Line       │ Message                       │ Level    │
+├─────────┼────────────┼───────────────────────────────┼──────────┤
+│ App.tsx │ 15         │ Direct .svg import detected   │ error    │
+│ Menu.tsx│ 23         │ Unknown token "foo:bar"       │ error    │
+└─────────┴────────────┴───────────────────────────────┴──────────┘
+[scan] Found 2 violations</code></pre>
+
+          <p><strong>JSON:</strong></p>
+          <pre><code>npx @semicons/cli scan ./src -f json</code></pre>
+
+          <h3>Exit Codes</h3>
+          <ul>
+            <li><code>0</code> - No violations or only warnings (if --fail-on=error)</li>
+            <li><code>1</code> - Errors found (or warnings if --fail-on=warn)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Doctor Command</h2>
+          <p>
+            The <code>doctor</code> command runs diagnostics on your semicons installation.
+          </p>
+
+          <h3>Basic Usage</h3>
+          <pre><code>npx @semicons/cli doctor</code></pre>
+
+          <h3>Options</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--fix</code></td>
+                <td>Attempt automatic fixes</td>
+              </tr>
+              <tr>
+                <td><code>--strict</code></td>
+                <td>Treat warnings as errors</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Checks Performed</h3>
+          <ul>
+            <li>Config file existence and validity</li>
+            <li>Theme configuration validity</li>
+            <li>SVG file existence for local icons</li>
+            <li>.gitignore configuration</li>
+            <li>Registry completeness</li>
+          </ul>
+
+          <h3>Example Output</h3>
+          <pre><code>[doctor] Running diagnostics...
+┌─────────┬────────────────────────────────────────┬────────────────────────┐
+│ Code    │ Message                                │ Fix                    │
+├─────────┼────────────────────────────────────────┼────────────────────────┤
+│ MISSING │ src/icons.generated/ not in .gitignore│ Add to .gitignore      │
+│ _SVG    │                                        │                        │
+└─────────┴────────────────────────────────────────┴────────────────────────┘</code></pre>
+
+          <h3>Auto-fix</h3>
+          <pre><code>npx @semicons/cli doctor --fix</code></pre>
+          <p>Automatically fixes common issues like .gitignore entries.</p>
+        </section>
+
+        <section>
+          <h2>Strict Mode</h2>
+          <p>
+            Strict mode enforces additional validation rules and treats warnings as errors.
+          </p>
+
+          <h3>Enable Strict Mode</h3>
+          <pre><code>npx @semicons/cli generate --strict</code></pre>
+
+          <h3>Strict Mode Rules</h3>
+          <ul>
+            <li>All themes must be defined for each token</li>
+            <li>Deprecated tokens produce errors instead of warnings</li>
+            <li>Any normalization warning causes the command to fail</li>
+            <li>Asset references are validated more strictly</li>
+          </ul>
+
+          <h3>Use Cases</h3>
+          <ul>
+            <li>CI/CD pipelines</li>
+            <li>Before releases</li>
+            <li>Team code quality enforcement</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Theme Configuration</h2>
+          <p>
+            Themes allow you to define different icon variants for different contexts (light/dark mode, brand colors, etc.).
+          </p>
+
+          <h3>Configuration</h3>
+          <pre><code>// semicons.config.mjs
+export default &#123;
+  version: '1.0.0',
+  themes: ['light', 'dark', 'high-contrast'],
+  defaultTheme: 'light',
+  tokens: &#123;
+    'navigation:menu': &#123;
+      themes: &#123;
+        light: 'local:menu-light',
+        dark: 'local:menu-dark',
+        'high-contrast': 'local:menu-contrast',
+      &#125;,
+    &#125;,
+    'status:info': &#123;
+      themes: &#123;
+        light: 'local:info-blue',
+        dark: 'local:info-blue',
+        'high-contrast': 'local:info-white',
+      &#125;,
+    &#125;,
+  &#125;,
+&#125;;</code></pre>
+
+          <h3>Theme Fallback</h3>
+          <p>If a token doesn't define all themes, missing themes fall back to the default theme:</p>
+          <pre><code>// This token only defines 'light', will fallback for dark
+'status:success': &#123;
+  themes: &#123;
+    light: 'local:success-green',
+  &#125;,
+&#125;
+// After generation:
+themes: &#123;
+  light: 'local:success-green',
+  dark: 'local:success-green',  // fallback
+&#125;</code></pre>
+
+          <h3>Strict Theme Completeness</h3>
+          <p>Use <code>--strict</code> to require all themes for every token:</p>
+          <pre><code>npx @semicons/cli generate --strict</code></pre>
+        </section>
+
+        <section>
+          <h2>Configuration File</h2>
+          <p>
+            Semicons supports multiple configuration file formats and locations.
+          </p>
+
+          <h3>Supported File Names</h3>
+          <ul>
+            <li><code>semicons.config.mjs</code> (recommended)</li>
+            <li><code>semicons.config.js</code></li>
+            <li><code>semicons.config.json</code></li>
+          </ul>
+
+          <h3>Custom Config Path</h3>
+          <pre><code>npx @semicons/cli generate --config path/to/config.mjs</code></pre>
+
+          <h3>Example: MJS Config</h3>
+          <pre><code>// semicons.config.mjs
+export default &#123;
+  version: '1.0.0',
+  themes: ['light', 'dark'],
+  defaultTheme: 'light',
+  tokens: &#123;
+    'navigation:menu': 'local:menu',
+    'action:edit': 'local:edit',
+    'status:error': 'local:error',
+  &#125;,
+&#125;;</code></pre>
+
+          <h3>Example: JSON Config</h3>
+          <pre><code>// semicons.config.json
+&#123;
+  "version": "1.0.0",
+  "themes": ["light", "dark"],
+  "defaultTheme": "light",
+  "tokens": &#123;
+    "navigation:menu": "local:menu"
+  &#125;
+&#125;</code></pre>
+        </section>
+
+        <section>
+          <h2>SVG Optimization</h2>
+          <p>
+            The CLI uses SVGO to optimize SVG files during generation.
+          </p>
+
+          <h3>Skip Optimization</h3>
+          <pre><code>npx @semicons/cli generate --no-optimize</code></pre>
+
+          <h3>Custom SVGO Plugins</h3>
+          <p>To customize optimization, create a custom SVGO config:</p>
+          <pre><code>// svgo.config.js
+export default &#123;
+  multipass: true,
+  plugins: [
+    'preset-default',
+    'removeDimensions',
+    'convertStyleToAttrs',
+  ],
+&#125;;</code></pre>
+        </section>
+
+        <section>
+          <h2>Generated Files</h2>
+          <p>
+            The <code>generate</code> command produces several files.
+          </p>
+
+          <h3>Output Structure</h3>
+          <pre><code>src/icons.generated/
+├── registry.json      # Icon registry (SSOT)
+├── schema.json        # JSON Schema for validation
+├── types.ts           # TypeScript types
+├── types.d.ts         # TypeScript declarations
+├── inline.ts          # Inline SVG data
+├── inline.d.ts        # Inline SVG declarations
+├── report.json        # Generation report
+└── local/             # Optimized local SVG files
+    ├── navigation-menu.light.svg
+    └── navigation-menu.dark.svg
+
+public/
+└── semicons.svg       # SVG sprite sheet</code></pre>
+
+          <h3>registry.json</h3>
+          <pre><code>&#123;
+  "version": "1.0.0",
+  "themes": ["light", "dark"],
+  "defaultTheme": "light",
+  "tokens": [
+    &#123;
+      "name": "navigation:menu",
+      "themes": &#123;
+        "light": "local:menu-light",
+        "dark": "local:menu-dark"
+      &#125;,
+      "a11y": &#123;
+        "label": "Menu"
+      &#125;,
+      "meta": &#123;
+        "category": "navigation"
+      &#125;
+    &#125;
+  ]
+&#125;</code></pre>
+
+          <h3>types.ts</h3>
+          <pre><code>// Auto-generated by semicons
+export type IconName = 'navigation:menu' | 'action:edit' | 'status:error';
+
+export interface IconMeta &#123;
+  name: string;
+  category?: string;
+  deprecated?: boolean | string;
+  description?: string;
+&#125;
+
+export const ICON_META: Record&lt;IconName, IconMeta&gt; = &#123;
+  'navigation:menu': &#123;
+    name: 'navigation:menu',
+    category: 'navigation',
+  &#125;,
+&#125;;</code></pre>
+        </section>
+
+        <section>
+          <h2>CI/CD Integration</h2>
+          <p>
+            Integrate Semicons into your continuous integration pipeline.
+          </p>
+
+          <h3>GitHub Actions Example</h3>
+          <pre><code># .github/workflows/icons.yml
+name: Icons
+
+on: [push, pull_request]
+
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: '8'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm semicons generate
+      - run: pnpm semicons scan ./src --fail-on error
+      - run: pnpm semicons doctor --strict</code></pre>
+
+          <h3>Pre-commit Hook</h3>
+          <pre><code># .pre-commit-config.yaml
+- repo: local
+  hooks:
+    - id: semicons-generate
+      name: Generate icons
+      entry: pnpm semicons generate
+      language: system
+      pass_filenames: false
+      stages: [pre-commit]</code></pre>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

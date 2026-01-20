@@ -5,6 +5,7 @@ import * as path from 'path';
 export const RULE_NAME = 'valid-icon-token';
 
 const TOKEN_NAME_PATTERN = /^[a-z][a-z0-9-]*:[a-zA-Z0-9][a-zA-Z0-9._/-]*$/;
+const DEFAULT_REGISTRY_PATH = 'src/icons.generated/registry.json';
 
 interface RuleOptions {
   iconComponentName?: string;
@@ -30,6 +31,40 @@ interface Registry {
   themes: string[];
   defaultTheme: string;
   tokens: RegistryToken[];
+}
+
+function findRegistryFile(startDir: string): string | null {
+  let currentDir = startDir;
+  const maxDepth = 10;
+  let depth = 0;
+
+  while (currentDir && depth < maxDepth) {
+    const registryPath = path.join(currentDir, DEFAULT_REGISTRY_PATH);
+    try {
+      if (fs.existsSync(registryPath)) {
+        return registryPath;
+      }
+    } catch {
+    }
+
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+    depth++;
+  }
+
+  return null;
+}
+
+function loadRegistry(filePath: string): Registry | null {
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(content) as Registry;
+  } catch {
+    return null;
+  }
 }
 
 const rule: Rule.RuleModule = {
@@ -61,14 +96,27 @@ const rule: Rule.RuleModule = {
     const iconComponentName = options.iconComponentName || 'Icon';
     const iconNameProp = options.iconNameProp || 'name';
     let registry: Registry | null = null;
+    let registryLoadAttempted = false;
 
-    if (options.registryPath) {
-      try {
-        const registryFilePath = path.resolve(context.getFilename(), '..', options.registryPath);
-        const content = fs.readFileSync(registryFilePath, 'utf-8');
-        registry = JSON.parse(content) as Registry;
-      } catch {
+    function getRegistry(): Registry | null {
+      if (registryLoadAttempted) {
+        return registry;
       }
+      registryLoadAttempted = true;
+
+      if (options.registryPath) {
+        const explicitPath = path.resolve(context.getFilename(), '..', options.registryPath);
+        registry = loadRegistry(explicitPath);
+        return registry;
+      }
+
+      const startDir = path.dirname(context.getFilename());
+      const registryPath = findRegistryFile(startDir);
+      if (registryPath) {
+        registry = loadRegistry(registryPath);
+      }
+
+      return registry;
     }
 
     function checkToken(tokenName: string, node: Rule.Node): void {
@@ -81,8 +129,9 @@ const rule: Rule.RuleModule = {
         return;
       }
 
-      if (registry) {
-        const token = registry.tokens.find(t => t.name === tokenName);
+      const loadedRegistry = getRegistry();
+      if (loadedRegistry) {
+        const token = loadedRegistry.tokens.find(t => t.name === tokenName);
         if (!token) {
           context.report({
             node,
