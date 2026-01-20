@@ -1,0 +1,39 @@
+/* apps/docs/src/styles/custom.css */
+
+/* Custom accent colors matching Semicons brand */
+:root {
+  --sl-color-accent-low: #1e1e2e;
+  --sl-color-accent: #4f46e5;
+  --sl-color-accent-high: #a5b4fc;
+}
+
+/* Smooth theme transitions */
+:root,
+html[data-theme='dark'] {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Enhanced code block styling */
+.expressive-code .frame {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar enhancement */
+.sidebar-content {
+  padding: 1rem 0;
+}
+
+/* Card grid for landing page */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Custom site title styling */
+.site-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
