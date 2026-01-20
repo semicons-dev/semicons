@@ -153,8 +153,24 @@ pnpm semicons generate -w
 
 ### P2-5: packages/cli 支持远程 registry
 
-- **内容**: 从 URL 获取配置
-- **状态**: 待开始
+- **文件**: `packages/cli/src/lib/config-loader.ts` (新建 `loadRemoteConfig` 函数)
+- **文件**: `packages/cli/src/index.ts` (添加 `--remote` 选项)
+- **文件**: `apps/docs/src/pages/docs/cli-advanced.astro` (添加远程 Registry 文档)
+- **内容**: 从 URL 获取配置，支持 JSON 和 JavaScript 模块格式
+- **效果**: 支持集中式图标管理，多项目共享配置
+- **状态**: ✅ 已完成 (2024-01-20)
+
+**使用方式:**
+```bash
+# 从远程 JSON 加载配置
+pnpm semicons generate --remote https://example.com/semicons.json
+
+# 从远程 JS 模块加载配置
+pnpm semicons generate --remote https://example.com/semicons.mjs
+
+# 短选项
+pnpm semicons generate -r https://example.com/semicons.json
+```
 
 ### P2-6: packages/eslint-plugin 添加 auto-fix
 

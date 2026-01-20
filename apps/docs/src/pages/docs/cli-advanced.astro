@@ -333,6 +333,82 @@ npx @semicons/cli generate -w</code></pre>
         </section>
 
         <section>
+          <h2>Remote Registry</h2>
+          <p>
+            Load icon configuration from a remote URL. This is useful for centralized icon management
+            across multiple projects or teams.
+          </p>
+
+          <h3>Basic Usage</h3>
+          <pre><code>npx @semicons/cli generate --remote https://example.com/semicons.config.json
+# or
+npx @semicons/cli generate -r https://example.com/semicons.config.mjs</code></pre>
+
+          <h3>Supported Formats</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Format</th>
+                <th>Content-Type</th>
+                <th>File Extension</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>JSON</td>
+                <td><code>application/json</code></td>
+                <td><code>.json</code></td>
+              </tr>
+              <tr>
+                <td>JavaScript Module</td>
+                <td><code>application/javascript</code></td>
+                <td><code>.js</code> or <code>.mjs</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Example Remote Config</h3>
+          <pre><code>// https://example.com/semicons.config.json
+&#123;
+  "version": "1.0.0",
+  "themes": ["light", "dark"],
+  "defaultTheme": "light",
+  "tokens": &#123;
+    "navigation:menu": "local:menu",
+    "status:error": "local:error"
+  &#125;
+&#125;</code></pre>
+
+          <h3>Remote with Local Icons</h3>
+          <p>
+            When using a remote config, SVG files are still read from the local <code>icons/local/</code> directory.
+            Ensure your project has the necessary SVG files.
+          </p>
+          <pre><code># Project structure
+my-app/
+├── icons/
+│   └── local/
+│       ├── menu.svg
+│       └── error.svg
+├── src/
+└── package.json</code></pre>
+
+          <h3>Combine with Local Override</h3>
+          <p>Use <code>--config</code> to override specific tokens while using remote as base:</p>
+          <pre><code>npx @semicons/cli generate \
+  --remote https://cdn.example.com/semicons.json \
+  --config semicons.override.json</code></pre>
+
+          <h3>CI/CD Example</h3>
+          <pre><code># Use centralized icon registry in CI
+- name: Generate icons
+  run: |
+    npx @semicons/cli generate \
+      --remote $ICON_REGISTRY_URL \
+      --out src/icons.generated</code></pre>
+        </section>
+
+        <section>
           <h2>Generated Files</h2>
           <p>
             The <code>generate</code> command produces several files.
