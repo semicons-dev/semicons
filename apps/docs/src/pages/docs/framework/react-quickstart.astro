@@ -263,6 +263,109 @@ if (isDeprecated('old:icon')) &#123;
         </section>
 
         <section>
+          <h2>Complete Workflow</h2>
+          <p>Follow these steps to set up Semicons with React in a new project:</p>
+
+          <h3>1. Install Dependencies</h3>
+          <pre><code>pnpm add @semicons/react @semicons/cli
+# or
+npm install @semicons/react @semicons/cli</code></pre>
+
+          <h3>2. Initialize Configuration</h3>
+          <pre><code>npx @semicons/cli init</code></pre>
+          <p>This creates:</p>
+          <ul>
+            <li><code>semicons.config.mjs</code> - Icon registry configuration</li>
+            <li><code>icons/local/*.svg</code> - Your icon SVG files</li>
+            <li><code>src/icons.generated/</code> - Directory for generated files</li>
+          </ul>
+
+          <h3>3. Add Your Icons</h3>
+          <p>Place SVG files in <code>icons/local/</code> directory, then update <code>semicons.config.mjs</code>:</p>
+          <pre><code>export default &#123;
+  version: '1.0.0',
+  themes: ['light', 'dark'],
+  defaultTheme: 'light',
+  tokens: &#123;
+    'navigation:menu': 'local:menu',
+    'navigation:close': 'local:close',
+    'status:error': 'local:error',
+    'status:success': 'local:success',
+  &#125;
+&#125;;</code></pre>
+
+          <h3>4. Generate Icon Assets</h3>
+          <pre><code>npx @semicons/cli generate</code></pre>
+          <p>This generates:</p>
+          <ul>
+            <li><code>src/icons.generated/registry.json</code> - Icon registry</li>
+            <li><code>src/icons.generated/types.ts</code> - TypeScript types</li>
+            <li><code>src/icons.generated/inline.ts</code> - Inline SVG data</li>
+            <li><code>public/semicons.svg</code> - SVG sprite sheet</li>
+          </ul>
+
+          <h3>5. Initialize in Your App</h3>
+          <p>Import the generated icons and initialize them in your app entry point:</p>
+          <pre><code>// main.tsx or App.tsx
+import &#123; Icon, SemiconsProvider, initFromGenerated &#125; from '@semicons/react'
+import &#123; INLINE_ICONS, ICON_META &#125; from './icons.generated/inline'
+
+// Initialize with generated icon data
+initFromGenerated(&#123; INLINE_ICONS, ICON_META &#125;)
+
+export function App() &#123;
+  return (
+    &lt;SemiconsProvider spriteUrl="/semicons.svg"&gt;
+      &lt;Icon name="navigation:menu" /&gt;
+      &lt;Icon name="status:error" /&gt;
+    &lt;/SemiconsProvider&gt;
+  )
+&#125;</code></pre>
+
+          <p>Or using the icons.generated entry point:</p>
+          <pre><code>// main.tsx
+import &#123; Icon, SemiconsProvider, initFromGenerated &#125; from '@semicons/react/icons.generated'
+import * as generated from './icons.generated'
+
+initFromGenerated(generated)
+
+export function App() &#123;
+  return (
+    &lt;SemiconsProvider&gt;
+      &lt;Icon name="navigation:menu" /&gt;
+    &lt;/SemiconsProvider&gt;
+  )
+&#125;</code></pre>
+
+          <h3>6. Deploy Sprite File</h3>
+          <p>Ensure <code>public/semicons.svg</code> is served by your dev server:</p>
+          <ul>
+            <li><strong>Vite:</strong> Files in <code>public/</code> are served at root</li>
+            <li><strong>Next.js:</strong> Move to <code>public/</code> or configure copy</li>
+            <li><strong>Create React App:</strong> Files in <code>public/</code> are served at root</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>TypeScript Support</h2>
+          <p>Semicons provides full TypeScript support with type-safe icon names:</p>
+          <pre><code>import &#123; Icon, SemiconsProvider, type IconName &#125; from '@semicons/react'
+
+// Use IconName type for props that accept icon names
+const iconName: IconName = 'navigation:menu'
+
+function Toolbar(&#123; icon &#125;: &#123; icon: IconName &#125;) &#123;
+  return &lt;Icon name=&#123;icon&#125; /&gt;
+&#125;</code></pre>
+
+          <p>The generated <code>types.ts</code> file also provides a union type for all available icons:</p>
+          <pre><code>import &#123; ICON_META &#125; from './icons.generated/types'
+
+// Get all available icon names
+type AvailableIcon = keyof typeof ICON_META</code></pre>
+        </section>
+
+        <section>
           <h2>Complete Example</h2>
           <pre><code>import &#123; Icon, SemiconsProvider &#125; from '@semicons/react'
 

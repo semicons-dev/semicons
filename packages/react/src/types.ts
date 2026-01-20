@@ -2,6 +2,8 @@ export type IconMode = 'auto' | 'sprite' | 'inline';
 
 export type IconSize = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
+export type IconName = string;
+
 export const ICON_SIZE_MAP: Record<Exclude<IconSize, number>, number> = {
   xs: 12,
   sm: 16,
