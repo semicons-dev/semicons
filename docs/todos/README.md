@@ -124,8 +124,16 @@ pnpm semicons generate -w
 
 ### P2-3: apps/docs 添加交互式 Playground
 
-- **内容**: 在线尝试 Icon 组件
-- **状态**: 待开始
+- **文件**: `apps/docs/src/pages/docs/playground.astro` (新建)
+- **内容**: 交互式图标演示页面，支持图标选择、属性调节、代码生成
+- **效果**: 用户可在文档站点在线体验图标组件
+- **状态**: ✅ 已完成 (2024-01-20)
+
+**功能**:
+- 15 个示例图标（navigation, status, action, editor 分类）
+- 可调节属性：大小、模式、装饰性、ARIA 标签
+- 实时预览
+- 一键复制生成的代码
 
 ### P2-4: packages/core 添加完整的测试覆盖
 
