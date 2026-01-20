@@ -7,6 +7,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./icons.generated": {
+      "import": "./dist/icons.generated/index.js",
+      "types": "./dist/icons.generated/index.d.ts"
     }
   },
   "main": "./dist/index.js",

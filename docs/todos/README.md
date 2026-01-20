@@ -102,8 +102,10 @@
 
 ### P2-1: packages/vue 创建 icons.generated 集成
 
-- **内容**: 同 P0-1，为 Vue 包添加自动导入
-- **状态**: 待开始
+- **文件**: `packages/vue/src/icons.generated/index.ts` (新建)
+- **内容**: 同 P0-1，为 Vue 包添加自动导入，提供 `initFromGenerated()` 函数
+- **效果**: 用户在 Vue 应用中只需 `<Icon name="status.error" />`，无需手动初始化
+- **状态**: ✅ 已完成 (2024-01-20)
 
 ### P2-2: packages/cli 添加 --watch 模式
 

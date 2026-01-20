@@ -13,3 +13,5 @@ export type {
 export { Icon, setInlineIcons, setIconMeta, getIconMeta, isDeprecated } from './Icon';
 export { SemiconsProvider } from './SemiconsProvider';
 export { useSemicons } from './context';
+
+export * from './icons.generated/index.js';
