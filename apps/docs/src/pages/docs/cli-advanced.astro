@@ -278,6 +278,61 @@ export default &#123;
         </section>
 
         <section>
+          <h2>Watch Mode</h2>
+          <p>
+            Watch mode automatically regenerates icons when configuration files or SVG files change.
+            This is useful during development.
+          </p>
+
+          <h3>Basic Usage</h3>
+          <pre><code>npx @semicons/cli generate --watch
+# or
+npx @semicons/cli generate -w</code></pre>
+
+          <h3>Watched Files</h3>
+          <ul>
+            <li>Configuration file (semicons.config.mjs/js/json)</li>
+            <li>All SVG files in the icons directory</li>
+          </ul>
+
+          <h3>Behavior</h3>
+          <ul>
+            <li>Initial generation runs immediately</li>
+            <li>Changes trigger regeneration after 300ms debounce</li>
+            <li>Press <code>Ctrl+C</code> to stop watching</li>
+            <li>Errors during regeneration are logged but don't stop the watcher</li>
+          </ul>
+
+          <h3>Example Output</h3>
+          <pre><code>$ npx @semicons/cli generate --watch
+
+[generate:watch] Watching for changes...
+[generate:watch] Config: semicons.config.mjs
+[generate:watch] Output: src/icons.generated
+
+[generate:watch] 2024-01-20T15:00:00.000Z - Regenerating...
+[generate] Generating 10 tokens to src/icons.generated
+[generate] Done!
+[generate:watch] Watching for changes...
+
+[generate:watch] File changed: icons/local/menu.svg
+[generate:watch] 2024-01-20T15:01:00.000Z - Regenerating...
+[generate] Generating 10 tokens to src/icons.generated
+[generate] Done!
+[generate:watch] Watching for changes...
+
+^C
+[generate:watch] Stopping watcher...</code></pre>
+
+          <h3>Use Cases</h3>
+          <ul>
+            <li>Development with hot reload</li>
+            <li>Real-time icon preview</li>
+            <li>Team collaboration on icon sets</li>
+          </ul>
+        </section>
+
+        <section>
           <h2>Generated Files</h2>
           <p>
             The <code>generate</code> command produces several files.

@@ -9,6 +9,7 @@ import {
 } from '@semicons/core';
 import { glob } from 'glob';
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
 import { optimize } from 'svgo';
 import { fileURLToPath } from 'url';
@@ -20,6 +21,7 @@ interface GenerateOptions {
   out?: string;
   noOptimize?: boolean;
   strict?: boolean;
+  watch?: boolean;
 }
 
 interface ScanOptions {
@@ -65,8 +67,13 @@ export function run() {
     .option('-o, --out <dir>', 'output directory', 'src/icons.generated')
     .option('--no-optimize', 'skip svgo optimization', false)
     .option('--strict', 'enforce theme completeness', false)
+    .option('-w, --watch', 'watch for changes and regenerate', false)
     .action(async (options: GenerateOptions) => {
-      await cmdGenerate(options);
+      if (options.watch) {
+        await cmdGenerateWatch(options);
+      } else {
+        await cmdGenerate(options);
+      }
     });
 
   program
@@ -312,6 +319,87 @@ ${spriteSymbols.join('\n')}
   }
 
   console.log('[generate] Done!');
+}
+
+async function cmdGenerateWatch(options: GenerateOptions) {
+  import('chokidar').then(({ watch }) => {
+    const debounce = (fn: Function, delay: number) => {
+      let timer: NodeJS.Timeout | null = null;
+      return (...args: any[]) => {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    };
+
+    const runGenerate = async () => {
+      try {
+        console.log(`\n[generate:watch] ${new Date().toISOString()} - Regenerating...`);
+        await cmdGenerate(options);
+        console.log('[generate:watch] Watching for changes...');
+      } catch (error) {
+        console.error('[generate:watch] Error during regeneration:', (error as Error).message);
+      }
+    };
+
+    const debouncedRunGenerate = debounce(runGenerate, 300);
+
+    let configPath = options.config;
+    if (!configPath) {
+      const searchPaths = ['semicons.config.mjs', 'semicons.config.js', 'semicons.config.json'];
+      for (const sp of searchPaths) {
+        if (fsSync.existsSync(sp)) {
+          configPath = sp;
+          break;
+        }
+      }
+    }
+
+    if (!configPath) {
+      throw new Error('No config file found. Use --config or create semicons.config.mjs');
+    }
+
+    const configDir = path.dirname(path.resolve(configPath));
+
+    console.log('[generate:watch] Watching for changes...');
+    console.log(`[generate:watch] Config: ${configPath}`);
+    console.log(`[generate:watch] Output: ${path.resolve(options.out || 'src/icons.generated')}`);
+
+    const watcher = watch([
+      configPath,
+      path.join(configDir, 'icons', 'local', '*.svg'),
+      path.join(configDir, 'icons', '**', '*.svg'),
+    ], {
+      ignoreInitial: false,
+    });
+
+    watcher.on('change', async (filePath: string) => {
+      console.log(`[generate:watch] File changed: ${path.relative(process.cwd(), filePath)}`);
+      await debouncedRunGenerate();
+    });
+
+    watcher.on('add', async (filePath: string) => {
+      console.log(`[generate:watch] File added: ${path.relative(process.cwd(), filePath)}`);
+      await debouncedRunGenerate();
+    });
+
+    watcher.on('unlink', async (filePath: string) => {
+      console.log(`[generate:watch] File removed: ${path.relative(process.cwd(), filePath)}`);
+      await debouncedRunGenerate();
+    });
+
+    watcher.on('error', (error: unknown) => {
+      console.error('[generate:watch] Watch error:', error);
+    });
+
+    const cleanup = async () => {
+      console.log('\n[generate:watch] Stopping watcher...');
+      await watcher.close();
+      process.exit(0);
+    };
+
+    process.on('SIGINT', cleanup);
+    process.on('SIGTERM', cleanup);
+  });
 }
 
 async function cmdScan(options: ScanOptions) {

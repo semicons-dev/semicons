@@ -109,8 +109,18 @@
 
 ### P2-2: packages/cli 添加 --watch 模式
 
-- **内容**: 热更新生成图标
-- **状态**: 待开始
+- **文件**: `packages/cli/src/index.ts` (修改 `cmdGenerateWatch` 函数)
+- **内容**: 添加 `-w, --watch` 选项，使用 chokidar 监听配置文件和 SVG 文件变化
+- **效果**: 自动重新生成图标，支持热更新开发
+- **状态**: ✅ 已完成 (2024-01-20)
+
+**使用方法:**
+```bash
+# 监听变化并自动重新生成
+pnpm semicons generate --watch
+# 或
+pnpm semicons generate -w
+```
 
 ### P2-3: apps/docs 添加交互式 Playground
 
