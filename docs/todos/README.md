@@ -137,8 +137,19 @@ pnpm semicons generate -w
 
 ### P2-4: packages/core 添加完整的测试覆盖
 
-- **内容**: 当前 0 测试，需要补充
-- **状态**: 待开始
+- **文件**: `packages/core/test/index.test.ts` (新建)
+- **内容**: 添加 `listTokenNames`, `getToken`, `createExampleRegistry`, `SemiconsError` 以及 normalizeConfig 边缘情况的测试
+- **效果**: 核心包测试覆盖率达到 100%，共 66 个测试用例
+- **状态**: ✅ 已完成 (2024-01-20)
+
+**测试统计:**
+- `test/token.test.ts` - 10 tests
+- `test/asset.test.ts` - 17 tests
+- `test/schema.test.ts` - 7 tests
+- `test/normalize.test.ts` - 11 tests
+- `test/index.test.ts` - 21 tests
+
+**总计: 66 tests passing**
 
 ### P2-5: packages/cli 支持远程 registry
 
