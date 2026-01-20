@@ -74,6 +74,8 @@ const rule: Rule.RuleModule = {
       description: 'Validate Icon component token names against pattern and registry.',
       recommended: true,
     },
+    hasSuggestions: true,
+    fixable: 'code',
     schema: [
       {
         type: 'object',
@@ -119,6 +121,49 @@ const rule: Rule.RuleModule = {
       return registry;
     }
 
+    function suggestSimilarTokens(tokenName: string, loadedRegistry: Registry): string[] {
+      const allTokens = loadedRegistry.tokens.map(t => t.name);
+      const suggestions: string[] = [];
+
+      for (const token of allTokens) {
+        const distance = levenshteinDistance(tokenName, token);
+        if (distance <= 2) {
+          suggestions.push(token);
+        }
+      }
+
+      return suggestions.slice(0, 3);
+    }
+
+    function levenshteinDistance(a: string, b: string): number {
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      const matrix: number[][] = [];
+      for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+      }
+      for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+      }
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+
+      return matrix[b.length][a.length];
+    }
+
     function checkToken(tokenName: string, node: Rule.Node): void {
       if (!TOKEN_NAME_PATTERN.test(tokenName)) {
         context.report({
@@ -133,17 +178,47 @@ const rule: Rule.RuleModule = {
       if (loadedRegistry) {
         const token = loadedRegistry.tokens.find(t => t.name === tokenName);
         if (!token) {
+          const suggestions = suggestSimilarTokens(tokenName, loadedRegistry);
+          const fix = (fixer: Rule.RuleFixer): Rule.Fix | null => {
+            if (suggestions.length > 0) {
+              return fixer.replaceText(node, `"${suggestions[0]}"`);
+            }
+            return null;
+          };
+
+          const suggest = suggestions.map(suggestion => ({
+            messageId: 'notInRegistry' as const,
+            data: { name: suggestion },
+            fix: (fixer: Rule.RuleFixer): Rule.Fix => fixer.replaceText(node, `"${suggestion}"`),
+          }));
+
           context.report({
             node,
             messageId: 'notInRegistry',
             data: { name: tokenName },
+            fix,
+            suggest,
           });
         } else if (token.deprecated) {
           const replacement = typeof token.deprecated === 'string' ? ` (removed in ${token.deprecated})` : '';
+
+          const suggest: Rule.SuggestionReportDescriptor[] = [];
+          if (typeof token.deprecated === 'string') {
+            suggest.push({
+              messageId: 'deprecated',
+              data: { name: tokenName, replacement: '' },
+              desc: `Remove deprecated token (use alternative)`,
+              fix: (fixer: Rule.RuleFixer): Rule.Fix => {
+                return fixer.remove(node);
+              },
+            });
+          }
+
           context.report({
             node,
             messageId: 'deprecated',
             data: { name: tokenName, replacement },
+            suggest,
           });
         }
       }

@@ -174,8 +174,17 @@ pnpm semicons generate -r https://example.com/semicons.json
 
 ### P2-6: packages/eslint-plugin 添加 auto-fix
 
-- **内容**: 自动修复 valid-token 错误
-- **状态**: 待开始
+- **文件**: `packages/eslint-plugin/src/rules/valid-icon-token.ts`
+- **改动**: 添加 `fixable: 'code'` 和 `hasSuggestions: true`，实现基于 Levenshtein 距离的相似 token 建议
+- **效果**: ESLint 可自动修复拼写错误的 icon token，提供修正建议
+- **状态**: ✅ 已完成 (2024-01-20)
+
+**功能**:
+- `notInRegistry` 错误：基于编辑距离提供相似 token 建议，支持一键修复
+- `deprecated` 错误：提供移除建议
+- 自动修复使用 `eslint --fix` 时可自动应用
+
+**测试结果:** 16 tests passing
 
 ---
 
