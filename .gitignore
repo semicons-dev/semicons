@@ -10,6 +10,7 @@ build
 .vscode
 *.tsbuildinfo
 turbo-debug.log
+.turbo
 .astro
 apps/docs/.astro
 apps/docs/dist

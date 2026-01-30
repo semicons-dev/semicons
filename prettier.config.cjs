@@ -1,1 +1,1 @@
-module.exports = require('@semicons/config/prettier');
+module.exports = require('./packages/config/prettier/index.cjs');
