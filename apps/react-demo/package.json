@@ -1,0 +1,30 @@
+{
+  "name": "react-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "semicons:generate": "semicons generate",
+    "semicons:scan": "semicons scan"
+  },
+  "dependencies": {
+    "@semicons/react": "workspace:*",
+    "lucide-react": "^0.563.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@semicons/cli": "workspace:*",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  }
+}

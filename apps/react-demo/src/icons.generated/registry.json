@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "defaultTheme": "light",
+  "tokens": [
+    {
+      "name": "lucide:alert-circle",
+      "themes": {
+        "light": "local:alert-circle",
+        "dark": "local:alert-circle"
+      }
+    },
+    {
+      "name": "lucide:bell",
+      "themes": {
+        "light": "local:bell",
+        "dark": "local:bell"
+      }
+    },
+    {
+      "name": "lucide:calendar",
+      "themes": {
+        "light": "local:calendar",
+        "dark": "local:calendar"
+      }
+    },
+    {
+      "name": "lucide:clock",
+      "themes": {
+        "light": "local:clock",
+        "dark": "local:clock"
+      }
+    },
+    {
+      "name": "lucide:error",
+      "themes": {
+        "light": "local:error",
+        "dark": "local:error"
+      }
+    },
+    {
+      "name": "lucide:home",
+      "themes": {
+        "light": "local:home",
+        "dark": "local:home"
+      }
+    },
+    {
+      "name": "lucide:info",
+      "themes": {
+        "light": "local:info",
+        "dark": "local:info"
+      }
+    },
+    {
+      "name": "lucide:mail",
+      "themes": {
+        "light": "local:mail",
+        "dark": "local:mail"
+      }
+    },
+    {
+      "name": "lucide:search",
+      "themes": {
+        "light": "local:search",
+        "dark": "local:search"
+      }
+    },
+    {
+      "name": "lucide:settings",
+      "themes": {
+        "light": "local:settings",
+        "dark": "local:settings"
+      }
+    },
+    {
+      "name": "lucide:star",
+      "themes": {
+        "light": "local:star",
+        "dark": "local:star"
+      }
+    },
+    {
+      "name": "lucide:success",
+      "themes": {
+        "light": "local:success",
+        "dark": "local:success"
+      }
+    },
+    {
+      "name": "lucide:user",
+      "themes": {
+        "light": "local:user",
+        "dark": "local:user"
+      }
+    },
+    {
+      "name": "lucide:warning",
+      "themes": {
+        "light": "local:warning",
+        "dark": "local:warning"
+      }
+    }
+  ]
+}
